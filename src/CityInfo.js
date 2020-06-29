@@ -11,12 +11,12 @@ function CityInfo(props){
 					src={store.icon} alt="icon" className="icon"
 				/> 
 				<span style={{fontSize: '1.2em'}}>
-	            	{store.temp}&deg;
+	            	{store.temp}&deg;C
 	            </span>
             </button>
             <ul className="dropdown-menu list-group" style={{textAlign: 'center'}}>
             	<h4>{store.name}</h4>
-            	<li className="list-group-item">temp: {props.store.temp} &deg;</li>
+            	<li className="list-group-item">temp: {props.store.temp} &deg;C</li>
 				<li className="list-group-item">pressure: {props.store.pressure} </li>
 				<li className="list-group-item">humidity: {props.store.humidity} %</li>
 				<li className="list-group-item">description: {props.store.description} </li>

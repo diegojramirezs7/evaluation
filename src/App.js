@@ -2,8 +2,8 @@ import React from 'react';
 import GoogleMap from 'google-map-react';
 import CityInfo from './CityInfo';
 import axios from 'axios';
-import DetailedWeather from './DetailedWeather';
 import Header from './Header';
+import InfoTable from './InfoTable';
 
 class App extends React.Component{
   state = {
@@ -76,7 +76,9 @@ class App extends React.Component{
   }
 
   handleClick = () => {
-    return "";
+    this.setState({
+      showInfo: !this.state.showInfo
+    })
   }
 
   render(){
@@ -106,11 +108,14 @@ class App extends React.Component{
               })
             }
 
-            {
-
-            }
-
           </GoogleMap>
+          
+          {this.state.showInfo && 
+            <InfoTable 
+              stores={this.state.stores}
+            />
+          }
+          
         </div>
       </div>
     );
