@@ -1,48 +1,120 @@
 import React from 'react';
-import GoogleMapReact from 'google-map-react';
+import GoogleMap from 'google-map-react';
+import CityInfo from './CityInfo';
+import axios from 'axios';
+import DetailedWeather from './DetailedWeather';
+import Header from './Header';
 
 class App extends React.Component{
-    state = {
-      showInfoWindow: false, //hide/show infowindow
-      mapLoaded: false,
-      stores: [
-        {city: "Dease Lake", lat: 58.4374, lng: -129.9994},
-        {city: "Fort Nelson", lat: 58.8050, lng: -122.6972},
-        {city: "Terrace", lat: 54.5182, lng: -128.6032},
-        {city: "Prince George", lat: 53.9171, lng: -122.7497},
-        {city: "Whistler", lat: 50.1163, lng: -122.9574},
-        {city: "Revelstoke", lat: 50.9981, lng: -118.1957},
-        {city: "Creston", lat: 49.5, lng: -116.5135}
-      ]
-    }
+  state = {
+    center: {},
+    stores: [],
+    showInfo: false,
+    activeStore: {}
+  }
   
+  getCenter(){
+    const stores = this.state.stores;
+    var maxLat = 0;
+    var minLat = 100;
+    var maxLong = -300;
+    var minLong = +300;
+    
+    for (let i = 0; i<stores.length; i++){
+      if (stores[i].coords.lat > maxLat){
+        maxLat = stores[i].coords.lat;
+      }else if(stores[i].coords.lat < minLat){
+        minLat = stores[i].coords.lat;
+      }
+
+      if (stores[i].coords.lng > maxLong){
+        maxLong = stores[i].coords.lng;
+      }else if(stores[i].coords.lng < minLong){
+        minLong = stores[i].coords.lng;
+      }
+    }
+
+    var latitude = (maxLat + minLat) / 2.0;
+    var longitude = (maxLong + minLong) / 2.0;
+
+    this.setState({
+      center: {lat: latitude, lng: longitude}
+    })
+  } 
+
+  componentDidMount(){
+    axios.get("http://api.openweathermap.org/data/2.5/group", {
+     params: {
+      units: "metric",
+      id: "6113365,5932311,6180144,5936286,5955902,6162949,6121621",
+      appid: "d768b86ac2b5b13b09964365eb5f0128"
+     }
+    }).then(response => {
+      var data = response.data.list;
+      const cityWeathers = data.map(city => {
+        return (
+          {
+            name: city.name,
+            temp: city.main.temp,
+            coords: {lat: city.coord.lat, lng: city.coord.lon},
+            tempMin: city.main.temp_min,
+            tempMax: city.main.temp_max,
+            pressure: city.main.pressure,
+            humidity: city.main.humidity,
+            description: city.weather[0].description,
+            windSpeed: city.wind.speed,
+            icon: "http://openweathermap.org/img/wn/"+city.weather[0].icon+".png"
+          }
+        );
+      });
+      this.setState({
+        stores: cityWeathers
+      });
+
+      this.getCenter();
+    });
+  }
+
+  handleClick = () => {
+    return "";
+  }
+
   render(){
     return (
-      <div className="App" style={{height: '70vh', width: '70vw', textAlign: 'center'}}>
-       <GoogleMapReact
-        bootstrapURLKeys={{ key: 'AIzaSyDAH-HZXwsL1DwvM7i0p3pPtrwrnzQhUxs'}}
-        defaultCenter={{lat: 54.6569, lng: -124.7417}}
-        defaultZoom={5.5} >
+      <div>
+        <Header 
+          showAllInfo={this.handleClick}
+        />
+        <div className="app">
+         <GoogleMap
+          bootstrapURLKeys={{ key: 'AIzaSyDAH-HZXwsL1DwvM7i0p3pPtrwrnzQhUxs'}}
+          defaultCenter={{lat: 54.0562, lng: -124.7414}}
+          defaultZoom={5.4} 
+          center={{lat: this.state.center.lat, lng: this.state.center.lng}}
+        >
+            {this.state.stores.map((store, index) => {
+                const latitude = store.coords.lat;
+                return (
+                  <CityInfo 
+                    key={index} 
+                    lat={Math.ceil(latitude)} 
+                    lng={Math.floor(store.coords.lng)} 
+                    store={store}
+                    cn={(latitude > this.state.center.lat)?'dropdown':'dropup'}
+                  />
+                );
+              })
+            }
 
-        {this.state.stores.map((store, index) => {
-          return (
-            <div key={index} lat={store.lat} lng={store.lng} style={{textAlign: 'center'}}>
-              {store.city}
-              <img src="./icons/raining.png" alt="icon" style={{width: '2.7vw', height: '3.5vh'}}/>
-              14&deg;
-            </div>
-          );
-        })
+            {
 
-        }
-        </GoogleMapReact>
+            }
+
+          </GoogleMap>
+        </div>
       </div>
     );
   }
-  
 }
 
-// export default GoogleApiWrapper({
-//   apiKey: 'AIzaSyDAH-HZXwsL1DwvM7i0p3pPtrwrnzQhUxs'
-// })(App);
 export default App;

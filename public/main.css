@@ -1,0 +1,22 @@
+.app{
+	height: 70vh;
+	width: 60vw;
+	margin: 0px auto;
+}
+
+.cityInfo{
+	display: inline-block;
+	text-align: center;
+	font-weight: bold;
+}
+
+.icon{
+	width: 3.9vw;
+	height: 4.8vh;
+	display: inline-block;
+}
+
+button{
+	background-color: transparent;
+	border: none;
+}
