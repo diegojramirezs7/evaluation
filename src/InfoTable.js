@@ -2,6 +2,7 @@ import React from 'react';
 
 function InfoTable(props){
 	const stores = props.stores;
+	//shows detailed info of all the locations when user presses the button on the header
 	return (
 		<div>
 			<table className="table table-striped">
@@ -16,6 +17,9 @@ function InfoTable(props){
 					</tr>
 				</thead>
 				<tbody>
+					{
+						//for every store display a row on the table
+					}
 					{stores.map((item, index) => {
 						return (
 							<tr key={index}>

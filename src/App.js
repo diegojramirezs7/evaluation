@@ -12,8 +12,12 @@ class App extends React.Component{
     showInfo: false,
     activeStore: {}
   }
+
+  intervalId;
   
   getCenter(){
+    // get the center of the map by getting midpoint of northernmost/southernmost cities
+    // and easternmost/westernmost cities
     const stores = this.state.stores;
     var maxLat = 0;
     var minLat = 100;
@@ -43,10 +47,27 @@ class App extends React.Component{
   } 
 
   componentDidMount(){
+    this.getCities();
+
+    //update every half hour
+    let half_hour = 1000*60*30
+    this.intervalId = setInterval(this.getCities.bind(this), half_hour)
+  }
+
+
+  componentWillUnmount(){
+    //if component is not there, no need to fetch the data
+    clearInterval(this.intervalID);
+  }
+
+
+  getCities(){
+    var city_ids = "6113365,5932311,6180144,5936286,5955902,6162949,6121621";
+    //fetch data from openWeatherMap API
     axios.get("http://api.openweathermap.org/data/2.5/group", {
      params: {
       units: "metric",
-      id: "6113365,5932311,6180144,5936286,5955902,6162949,6121621",
+      id: city_ids,
       appid: "d768b86ac2b5b13b09964365eb5f0128"
      }
     }).then(response => {
@@ -76,6 +97,7 @@ class App extends React.Component{
   }
 
   handleClick = () => {
+    //display/hide info table
     this.setState({
       showInfo: !this.state.showInfo
     })
@@ -84,8 +106,12 @@ class App extends React.Component{
   render(){
     return (
       <div>
+        {
+          //
+        }
         <Header 
           showAllInfo={this.handleClick}
+          showInfo={this.state.showInfo}
         />
         <div className="app">
          <GoogleMap
@@ -94,6 +120,10 @@ class App extends React.Component{
           defaultZoom={5.4} 
           center={{lat: this.state.center.lat, lng: this.state.center.lng}}
         >
+
+            {
+              //for every store, show it on the map with the appropriate info
+            }
             {this.state.stores.map((store, index) => {
                 const latitude = store.coords.lat;
                 return (
@@ -110,6 +140,10 @@ class App extends React.Component{
 
           </GoogleMap>
           
+          {
+            //show/hide detailed info table when user clicks button on the header
+          }
+
           {this.state.showInfo && 
             <InfoTable 
               stores={this.state.stores}
