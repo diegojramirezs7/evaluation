@@ -19,6 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:prod": "docker build -t diegojramirezs7/weather .",
+    "deploy:prod": "better-npm-run deploy:prod",
     "start:prod": "docker run --rm -d -p 80:80 --name bc-weather diegojramirezs7/weather",
     "create:aws": "chmod +x ./bin/deploy.sh; ./bin/deploy.sh create",
     "deploy:aws": "chmod +x ./bin/deploy.sh; ./bin/deploy.sh deploy"
