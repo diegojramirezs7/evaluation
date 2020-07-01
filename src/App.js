@@ -64,7 +64,7 @@ class App extends React.Component{
   getCities(){
     var city_ids = "6113365,5932311,6180144,5936286,5955902,6162949,6121621";
     //fetch data from openWeatherMap API
-    axios.get("http://api.openweathermap.org/data/2.5/group", {
+    axios.get("https://api.openweathermap.org/data/2.5/group", {
      params: {
       units: "metric",
       id: city_ids,
