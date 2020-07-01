@@ -84,7 +84,7 @@ class App extends React.Component{
             humidity: city.main.humidity,
             description: city.weather[0].description,
             windSpeed: city.wind.speed,
-            icon: "http://openweathermap.org/img/wn/"+city.weather[0].icon+".png"
+            icon: "https://openweathermap.org/img/wn/"+city.weather[0].icon+".png"
           }
         );
       });
