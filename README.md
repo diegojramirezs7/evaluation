@@ -16,3 +16,6 @@ Displaying weather data superimposed over cities in a BC map.
 - The initial template for the app was created with "create-react-app", which sets up the environment to start building single page applications.  
 - The weather data is fetched with Axios, an HTTP client.
 - The OpenWeatherMap API is used to get weather data. This API was chosen because it's free for up to 60 calls a minute and provides extensive weather data for thousands of cities. 
+- the working web app is hosted with AWS Amplify
+- A Docker image of the app is available here: (https://hub.docker.com/r/diegojramirezs7/weather)[here]
+- Working web app: (https://master.d2r27k6na503lz.amplifyapp.com/)[amplifyapp]
